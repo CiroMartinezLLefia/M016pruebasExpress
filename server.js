@@ -1,9 +1,15 @@
 import express from "express";
 import router from './routes/routesChelas.js';
 import routerVinos from './routes/routesVinos.js';
+import dotenv from 'dotenv';
+import { connectDB } from './config/db.js';
+
+dotenv.config();
+
+connectDB();
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 app.use('/api/chelas', router);
 
