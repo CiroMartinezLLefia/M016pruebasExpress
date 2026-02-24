@@ -1,0 +1,34 @@
+@baseUrl = http://localhost:3001
+
+### Get API root
+GET {{baseUrl}}/api
+
+### List chelas
+GET {{baseUrl}}/api/chelas
+
+### List vinos
+GET {{baseUrl}}/api/vinos
+
+### Create vino
+POST {{baseUrl}}/api/vinos
+Content-Type: application/json
+
+{
+  "name": "Vino Prueba",
+  "price": 10.5
+}
+
+### Get vino by id (replace VINO_ID)
+GET {{baseUrl}}/api/vinos/699caa4933d874653448fbc6
+
+### Update vino by id (replace VINO_ID)
+PUT {{baseUrl}}/api/vinos/699caa4933d874653448fbc6
+Content-Type: application/json
+
+{
+  "name": "Vino Prueba Actualizado",
+  "price": 11.0
+}
+
+### Delete vino by id (replace VINO_ID)
+DELETE {{baseUrl}}/api/vinos/699caa4933d874653448fbc6

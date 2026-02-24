@@ -1,47 +1,70 @@
-const chelas = [
-    { id: 1, name: "Chela Rubia", description: "Una rubia bien fría" },
-    { id: 2, name: "Chela Tostada", description: "Con sabor intenso" },
-    { id: 3, name: "Chela IPA", description: "Amargor potente" }
-];
+import Chela from '../modelos/modeloChelas.js';
 
-export function getChelas(req, res) {
-    res.json(chelas);
-    return chelas;
-}
-
-export function getChelasById(req, res) {
-    const id = parseInt(req.params.id);
-    const chela = chelas.find(c => c.id === id);
-    res.json(chela);
-}
-
-export function createChela(req, res) {
-    const newChela = req.body;
-    chelas.push(newChela);
-    res.json({ message: "New chela created", chela: newChela });
-}
-
-export function updateChela(req, res) {
-    const id = parseInt(req.params.id);
-    const updatedChela = req.body;
-    const index = chelas.findIndex(c => c.id === id);
-
-    if (index !== -1) {
-        chelas[index] = { ...chelas[index], ...updatedChela };
-        res.json({ message: "Chela updated", chela: chelas[index] });
-    } else {
-        res.status(404).json({ message: "Chela not found" });
+export async function getChelas(req, res) {
+    try {
+        const birras = await Chela.find();
+        res.json(birras);
+        return birras;
+    } catch (error) {
+        console.error('Error fetching chelas:', error);
+        res.status(500).json({ message: 'Error fetching chelas' });
     }
 }
 
-export function deleteChela(req, res) {
-    const id = parseInt(req.params.id);
-    const index = chelas.findIndex(c => c.id === id);
+export async function getChelaById(req, res) {
+    const id = req.params.id;
+    try {
+        const chela = await Chela.findById(id);
+        if (chela) {
+            res.json(chela);
+        } else {
+            res.status(404).json({ message: 'Chela not found' });
+        }
+    } catch (error) {
+        console.error('Error fetching chela by ID:', error);
+        res.status(500).json({ message: 'Error fetching chela' });
+    }
+}
 
-    if (index !== -1) {
-        const deletedChela = chelas.splice(index, 1);
-        res.json({ message: "Chela deleted", chela: deletedChela[0] });
-    } else {
-        res.status(404).json({ message: "Chela not found" });
+export async function createChela(req, res) {
+    const { nombre, price } = req.body;
+    try {
+        const newChela = new Chela({ nombre, price });
+        await newChela.save();
+        res.json({ message: 'New chela created', chela: newChela });
+    } catch (error) {
+        console.error('Error creating chela:', error);
+        res.status(500).json({ message: 'Error creating chela' });
+    }
+}
+
+export async function updateChela(req, res) {
+    const id = req.params.id;
+    const { nombre, price } = req.body;
+    try {
+        const updatedChela = await Chela.findByIdAndUpdate(id, { nombre, price }, { new: true });
+        if (updatedChela) {
+            res.json({ message: 'Chela updated', chela: updatedChela });
+        } else {
+            res.status(404).json({ message: 'Chela not found' });
+        }
+    } catch (error) {
+        console.error('Error updating chela:', error);
+        res.status(500).json({ message: 'Error updating chela' });
+    }
+}
+
+export async function deleteChela(req, res) {
+    const id = req.params.id;
+    try {
+        const deletedChela = await Chela.findByIdAndDelete(id);
+        if (deletedChela) {
+            res.json({ message: 'Chela deleted', chela: deletedChela });
+        } else {
+            res.status(404).json({ message: 'Chela not found' });
+        }
+    } catch (error) {
+        console.error('Error deleting chela:', error);
+        res.status(500).json({ message: 'Error deleting chela' });
     }
 }
