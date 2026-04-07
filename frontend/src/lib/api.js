@@ -1,4 +1,20 @@
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+function normalizeBaseUrl(rawUrl) {
+  const fallback = 'http://localhost:3001';
+  const value = (rawUrl || '').trim();
+
+  if (!value) {
+    return fallback;
+  }
+
+  if (/^https?:\/\//i.test(value)) {
+    return value.replace(/\/+$/, '');
+  }
+
+  // Si falta protocolo (caso comun en Vercel env vars), forzamos https.
+  return `https://${value.replace(/^\/+/, '').replace(/\/+$/, '')}`;
+}
+
+const API_BASE = normalizeBaseUrl(import.meta.env.VITE_API_URL);
 
 export function buildUrl(path) {
   return `${API_BASE}${path}`;
