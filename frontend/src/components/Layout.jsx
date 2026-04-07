@@ -1,14 +1,18 @@
 import React from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { useAuth } from '../state/auth';
+import { getUserAvatar } from '../lib/media';
 
 export default function Layout({ children }) {
   const { isLogged, isEditor, isAdmin, logout, user } = useAuth();
+  const avatar = getUserAvatar(user);
 
   return (
     <div className="shell">
+      <div className="ambient ambient-top" aria-hidden="true" />
+      <div className="ambient ambient-bottom" aria-hidden="true" />
       <header className="topbar">
-        <Link to="/" className="brand">Vinacoteca</Link>
+        <Link to="/" className="brand">Vinacoteca Atelier</Link>
         <nav>
           <NavLink to="/">Cataleg</NavLink>
           {isLogged && <NavLink to="/pedidos">Comandes</NavLink>}
@@ -23,7 +27,11 @@ export default function Layout({ children }) {
             </>
           ) : (
             <>
-              <span>{user?.email}</span>
+              <img className="avatar" src={avatar} alt={user?.nombre || 'Perfil'} />
+              <div className="user-meta">
+                <span>{user?.nombre || 'Usuari'}</span>
+                <small>{user?.email}</small>
+              </div>
               <button onClick={logout}>Sortir</button>
             </>
           )}

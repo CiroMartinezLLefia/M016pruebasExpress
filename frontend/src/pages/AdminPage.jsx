@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { api } from '../lib/api';
 import { useAuth } from '../state/auth';
+import { getUserAvatar } from '../lib/media';
 
 export default function AdminPage() {
   const { token } = useAuth();
@@ -35,7 +36,10 @@ export default function AdminPage() {
       <ul className="simple-list">
         {usuarios.map((u) => (
           <li key={u._id}>
-            <span>{u.email} ({u.rol})</span>
+            <span className="list-item-rich">
+              <img src={getUserAvatar(u)} alt={u.nombre || u.email} />
+              <span>{u.email} ({u.rol})</span>
+            </span>
             <select value={u.rol} onChange={(e) => cambiarRol(u._id, e.target.value)}>
               <option value="usuari">usuari</option>
               <option value="editor">editor</option>

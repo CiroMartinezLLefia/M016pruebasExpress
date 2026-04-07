@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { api } from '../lib/api';
 import { useAuth } from '../state/auth';
+import { getProductImage } from '../lib/media';
 
 export default function EditorPage() {
   const { token } = useAuth();
@@ -87,7 +88,10 @@ export default function EditorPage() {
         <ul className="simple-list">
           {items.map((item) => (
             <li key={`${item.tipoApi}-${item._id}`}>
-              <span>{item.tipoApi}: {item.name || item.nombre}</span>
+              <span className="list-item-rich">
+                <img src={getProductImage(item, item.tipoApi)} alt={item.name || item.nombre} />
+                <span>{item.tipoApi}: {item.name || item.nombre}</span>
+              </span>
               <button onClick={() => eliminar(item)}>Eliminar</button>
             </li>
           ))}

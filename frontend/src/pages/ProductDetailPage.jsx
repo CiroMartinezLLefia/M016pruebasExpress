@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { api, buildUrl } from '../lib/api';
+import { api } from '../lib/api';
+import { getProductImage } from '../lib/media';
 
 export default function ProductDetailPage() {
   const { tipo, id } = useParams();
@@ -24,8 +25,12 @@ export default function ProductDetailPage() {
 
   return (
     <article className="panel detail">
+      <p className="eyebrow">Fitxa de Producte</p>
       <h2>{producto.name || producto.nombre}</h2>
-      {producto.imagen && <img src={buildUrl(producto.imagen)} alt={producto.name || producto.nombre} />}
+      <img
+        src={getProductImage(producto, tipo === 'chela' ? 'chela' : 'vino')}
+        alt={producto.name || producto.nombre}
+      />
       <p>{producto.descripcion || 'Sense descripcio'}</p>
       <p>Tipus: {producto.tipo || 'n/d'}</p>
       <p>Graduacio: {producto.graduacion || 0}%</p>

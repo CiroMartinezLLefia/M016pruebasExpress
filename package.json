@@ -19,7 +19,8 @@
     "dev": "nodemon server.js",
     "dev:frontend": "npm --prefix frontend run dev",
     "build:frontend": "npm --prefix frontend run build",
-    "preview:frontend": "npm --prefix frontend run preview"
+    "preview:frontend": "npm --prefix frontend run preview",
+    "seed:demo": "node scripts/seedDemoData.js"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",

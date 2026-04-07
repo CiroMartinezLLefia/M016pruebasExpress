@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { api, buildUrl } from '../lib/api';
+import { api } from '../lib/api';
+import { getProductImage } from '../lib/media';
 
 export default function CatalogPage() {
   const [vinos, setVinos] = useState([]);
@@ -29,13 +30,23 @@ export default function CatalogPage() {
   if (error) return <p>Error carregant cataleg: {error}</p>;
 
   return (
-    <section className="grid-catalog">
-      <div className="panel">
+    <section className="catalog-wrap">
+      <section className="hero panel">
+        <p className="eyebrow">Seleccio Curada</p>
+        <h1>Vins i cerveses amb personalitat</h1>
+        <p>
+          Descobreix referencies especials, etiqueta artesanal i novetats de temporada.
+          El cataleg manté tota la funcionalitat, ara amb una experiència visual molt més viva.
+        </p>
+      </section>
+
+      <section className="grid-catalog">
+        <div className="panel">
         <h2>Vins</h2>
         <ul className="cards">
           {vinos.map((vino) => (
             <li key={vino._id}>
-              {vino.imagen && <img src={buildUrl(vino.imagen)} alt={vino.name} />}
+              <img src={getProductImage(vino, 'vino')} alt={vino.name} loading="lazy" />
               <h3>{vino.name}</h3>
               <p>{vino.descripcion || 'Sense descripcio'}</p>
               <strong>{vino.price} EUR</strong>
@@ -43,13 +54,13 @@ export default function CatalogPage() {
             </li>
           ))}
         </ul>
-      </div>
-      <div className="panel">
+        </div>
+        <div className="panel">
         <h2>Cerveses</h2>
         <ul className="cards">
           {chelas.map((chela) => (
             <li key={chela._id}>
-              {chela.imagen && <img src={buildUrl(chela.imagen)} alt={chela.nombre} />}
+              <img src={getProductImage(chela, 'chela')} alt={chela.nombre} loading="lazy" />
               <h3>{chela.nombre}</h3>
               <p>{chela.descripcion || 'Sense descripcio'}</p>
               <strong>{chela.price} EUR</strong>
@@ -57,7 +68,8 @@ export default function CatalogPage() {
             </li>
           ))}
         </ul>
-      </div>
+        </div>
+      </section>
     </section>
   );
 }

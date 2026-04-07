@@ -22,14 +22,18 @@ export default function RegisterPage() {
   }
 
   return (
-    <form className="panel form" onSubmit={onSubmit}>
-      <h2>Registre amb foto</h2>
-      <input name="nombre" type="text" placeholder="Nom" required />
-      <input name="email" type="email" placeholder="Email" required />
-      <input name="password" type="password" placeholder="Contrasenya" required />
-      <input name="foto" type="file" accept="image/*" required />
-      {error && <p className="error">{error}</p>}
-      <button>Crear compte</button>
-    </form>
+    <section className="auth-layout">
+      <div className="panel auth-visual register" aria-hidden="true" />
+      <form className="panel form" onSubmit={onSubmit}>
+        <p className="eyebrow">Nou Compte</p>
+        <h2>Registre amb foto</h2>
+        <input name="nombre" type="text" placeholder="Nom" required />
+        <input name="email" type="email" placeholder="Email" required />
+        <input name="password" type="password" placeholder="Contrasenya" required />
+        <input name="foto" type="file" accept="image/*" required />
+        {error && <p className="error">{error}</p>}
+        <button>Crear compte</button>
+      </form>
+    </section>
   );
 }
