@@ -2,10 +2,15 @@ import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
 
-const uploadDir = path.resolve('uploads');
+const isVercel = Boolean(process.env.VERCEL);
+const uploadDir = isVercel ? '/tmp/uploads' : path.resolve('uploads');
 
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir, { recursive: true });
+try {
+  if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir, { recursive: true });
+  }
+} catch (error) {
+  console.error('No se pudo preparar uploadDir:', error.message);
 }
 
 const storage = multer.diskStorage({

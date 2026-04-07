@@ -51,6 +51,18 @@ app.get('/api', (req, res) => {
   res.json({ message: 'BIENVENIDO A LA API' });
 });
 
+app.get('/', (req, res) => {
+  res.json({
+    service: 'vinacoteca-backend',
+    status: 'ok',
+    docsHint: '/api'
+  });
+});
+
+app.use((req, res) => {
+  res.status(404).json({ error: 'Ruta no trobada' });
+});
+
 app.use((err, req, res, next) => {
   if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
     return res.status(400).json({ error: 'JSON invalid' });
