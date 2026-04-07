@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bodega API Front</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Bricolage+Grotesque:wght@500;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="bg-shape bg-shape-a"></div>
+    <div class="bg-shape bg-shape-b"></div>
+
+    <main class="app-shell">
+      <header class="hero">
+        <p class="kicker">Express + Mongo</p>
+        <h1>Panel de Bodega</h1>
+        <p class="subtitle">Frontend simple para testear auth, vinos y chelas sin Postman.</p>
+      </header>
+
+      <section class="grid">
+        <article class="card auth-card">
+          <h2>Cuenta</h2>
+          <p class="hint">Regístrate o entra para obtener token JWT.</p>
+
+          <div class="row-2">
+            <input id="email" type="email" placeholder="email@dominio.com" autocomplete="email" />
+            <input id="password" type="password" placeholder="Contraseña" autocomplete="current-password" />
+          </div>
+
+          <div class="actions">
+            <button id="btnRegister">Registro</button>
+            <button id="btnLogin" class="alt">Login</button>
+            <button id="btnLogout" class="danger">Logout</button>
+          </div>
+
+          <label class="label" for="token">Token JWT</label>
+          <textarea id="token" rows="4" placeholder="Se autocompleta al hacer login/registro"></textarea>
+          <button id="btnSaveToken" class="ghost">Guardar token manual</button>
+        </article>
+
+        <article class="card vinos-card">
+          <h2>Vinos (API pública)</h2>
+          <p class="hint">GET/POST/DELETE sobre /api/vinos.</p>
+
+          <div class="row-2">
+            <input id="vinoName" type="text" placeholder="Nombre del vino" />
+            <input id="vinoPrice" type="number" min="0" step="0.01" placeholder="Precio" />
+          </div>
+          <div class="actions">
+            <button id="btnAddVino">Añadir vino</button>
+            <button id="btnReloadVinos" class="ghost">Recargar</button>
+          </div>
+
+          <ul id="vinosList" class="list"></ul>
+        </article>
+
+        <article class="card chelas-card">
+          <h2>Chelas (protegido)</h2>
+          <p class="hint">Necesita JWT en Authorization Bearer.</p>
+
+          <div class="row-2">
+            <input id="chelaName" type="text" placeholder="Nombre de la chela" />
+            <input id="chelaPrice" type="number" min="0" step="0.01" placeholder="Precio" />
+          </div>
+          <div class="actions">
+            <button id="btnAddChela">Añadir chela</button>
+            <button id="btnReloadChelas" class="ghost">Recargar</button>
+          </div>
+
+          <ul id="chelasList" class="list"></ul>
+        </article>
+      </section>
+
+      <section class="card log-card">
+        <h2>Consola</h2>
+        <pre id="log"></pre>
+      </section>
+    </main>
+
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>

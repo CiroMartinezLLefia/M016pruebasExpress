@@ -1,34 +1,156 @@
 @baseUrl = http://localhost:3001
+@tokenUsuari = REEMPLAZAR_TOKEN_USUARIO
+@tokenEditor = REEMPLAZAR_TOKEN_EDITOR
+@tokenAdmin = REEMPLAZAR_TOKEN_ADMIN
 
-### Get API root
+### API base
 GET {{baseUrl}}/api
 
-### List chelas
-GET {{baseUrl}}/api/chelas
+### Registro con foto (multipart)
+POST {{baseUrl}}/api/auth/registro
+Content-Type: multipart/form-data; boundary=Boundary
 
-### List vinos
+--Boundary
+Content-Disposition: form-data; name="nombre"
+
+Usuari Prova
+--Boundary
+Content-Disposition: form-data; name="email"
+
+usuari@example.com
+--Boundary
+Content-Disposition: form-data; name="password"
+
+123456
+--Boundary
+Content-Disposition: form-data; name="foto"; filename="avatar.jpg"
+Content-Type: image/jpeg
+
+< ./tests/avatar.jpg
+--Boundary--
+
+### Login usuari
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "usuari@example.com",
+  "password": "123456"
+}
+
+### Login editor
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "editor@example.com",
+  "password": "123456"
+}
+
+### Login admin
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@example.com",
+  "password": "123456"
+}
+
+### Perfil GET (protegido)
+GET {{baseUrl}}/api/auth/perfil
+Authorization: Bearer {{tokenUsuari}}
+
+### Perfil PUT (protegido)
+PUT {{baseUrl}}/api/auth/perfil
+Content-Type: application/json
+Authorization: Bearer {{tokenUsuari}}
+
+{
+  "nombre": "Usuari Editat"
+}
+
+### Productes públics
 GET {{baseUrl}}/api/vinos
 
-### Create vino
+### Productes públics per id
+GET {{baseUrl}}/api/vinos/REEMPLAZAR_ID
+
+### Productes públics (chelas)
+GET {{baseUrl}}/api/chelas
+
+### Productes públics (chela by id)
+GET {{baseUrl}}/api/chelas/699caa3d33d874653448fbc3
+
+### Crear vino (editor/admin)
 POST {{baseUrl}}/api/vinos
 Content-Type: application/json
+Authorization: Bearer {{tokenEditor}}
 
 {
-  "name": "Vino Prueba",
-  "price": 10.5
+  "name": "Vino Negre",
+  "descripcion": "Vino de prova",
+  "tipo": "Negre",
+  "graduacion": 13.5,
+  "price": 12.5
 }
 
-### Get vino by id (replace VINO_ID)
-GET {{baseUrl}}/api/vinos/699caa4933d874653448fbc6
-
-### Update vino by id (replace VINO_ID)
-PUT {{baseUrl}}/api/vinos/699caa4933d874653448fbc6
+### Crear chela (editor/admin)
+POST {{baseUrl}}/api/chelas
 Content-Type: application/json
+Authorization: Bearer {{tokenEditor}}
 
 {
-  "name": "Vino Prueba Actualizado",
-  "price": 11.0
+  "nombre": "Chela Prueba",
+  "descripcion": "Chela de prova",
+  "tipo": "IPA",
+  "graduacion": 6.1,
+  "price": 5.5
 }
 
-### Delete vino by id (replace VINO_ID)
-DELETE {{baseUrl}}/api/vinos/699caa4933d874653448fbc6
+### Editar chela (editor/admin)
+PUT {{baseUrl}}/api/chelas/699caa3d33d874653448fbc3
+Content-Type: application/json
+Authorization: Bearer {{tokenEditor}}
+
+{
+  "nombre": "Chela Actualizada",
+  "descripcion": "Descripcio nova",
+  "price": 6.0
+}
+
+### Eliminar chela (editor/admin)
+DELETE {{baseUrl}}/api/chelas/699caa3d33d874653448fbc3
+Authorization: Bearer {{tokenEditor}}
+
+### Comanda (usuari autenticat)
+POST {{baseUrl}}/api/pedidos
+Content-Type: application/json
+Authorization: Bearer {{tokenUsuari}}
+
+{
+  "items": [
+    {
+      "tipusProducte": "vino",
+      "producteId": "REEMPLAZAR_ID_PRODUCTO",
+      "cantidad": 2
+    }
+  ]
+}
+
+### Meves comandes
+GET {{baseUrl}}/api/pedidos/me
+Authorization: Bearer {{tokenUsuari}}
+
+### Llistar usuaris (admin)
+GET {{baseUrl}}/api/usuarios
+Authorization: Bearer {{tokenAdmin}}
+
+### Canviar rol (admin)
+PATCH {{baseUrl}}/api/usuarios/REEMPLAZAR_ID_USUARIO/rol
+Content-Type: application/json
+Authorization: Bearer {{tokenAdmin}}
+
+{
+  "rol": "editor"
+}
+
