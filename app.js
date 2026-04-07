@@ -17,11 +17,29 @@ const origins = (process.env.FRONTEND_URL || 'http://localhost:5173')
   .map((o) => o.trim())
   .filter(Boolean);
 
+function isAllowedOrigin(origin) {
+  if (!origin) {
+    return true;
+  }
+
+  if (origins.includes(origin)) {
+    return true;
+  }
+
+  // Permite despliegues y previews de Vercel para evitar bloqueos por dominios dinamicos.
+  if (process.env.VERCEL && /^https:\/\/[a-z0-9-]+\.vercel\.app$/i.test(origin)) {
+    return true;
+  }
+
+  return false;
+}
+
 app.use(cors({
   origin: (origin, callback) => {
-    if (!origin || origins.includes(origin)) {
+    if (isAllowedOrigin(origin)) {
       return callback(null, true);
     }
+    console.error('CORS bloqueado para origen:', origin);
     return callback(new Error('Origen no permitido por CORS'));
   },
   credentials: true,
