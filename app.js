@@ -39,6 +39,14 @@ app.use('/api/vinos', routerVinos);
 app.use('/api/pedidos', routerPedidos);
 app.use('/api/usuarios', routerUsuarios);
 
+app.get('/favicon.ico', (req, res) => {
+  res.status(204).end();
+});
+
+app.get('/api/favicon.ico', (req, res) => {
+  res.status(204).end();
+});
+
 app.get('/api', (req, res) => {
   res.json({ message: 'BIENVENIDO A LA API' });
 });
@@ -51,6 +59,11 @@ app.use((err, req, res, next) => {
     return res.status(403).json({ error: err.message });
   }
   return next(err);
+});
+
+app.use((err, req, res, next) => {
+  console.error('Unhandled error:', err);
+  res.status(500).json({ error: 'Error intern del servidor' });
 });
 
 connectDB();
